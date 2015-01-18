@@ -14,7 +14,8 @@ $(function() {
     $.each( $( ".choice" ), function(_, raw_elem) {
       var elem = $(raw_elem);
       elem.click( function() {
-        ws.send(elem.data('item'));
+        $.post('http://localhost:8888/rpc/turn/' +
+                elem.data('item'));
       });
     });
 });
