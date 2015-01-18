@@ -17,9 +17,11 @@ class WebSocketHandler(websocket.WebSocketHandler):
   users = {}
 
   def open(self):
-    uid = str(random.randint(0, 100000))
+    uid = self.get_cookie("uid")
+    if uid is None:
+      uid = str(random.randint(0, 100000))
+      self.write_message("uid:" + uid)
     print("WebSocket opened for " + uid)
-    self.write_message("uid:" + uid)
     WebSocketHandler.users[uid] = self
 
   def on_message(self, message):
