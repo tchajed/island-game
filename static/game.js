@@ -10,4 +10,11 @@ $(function() {
     ws.onopen = function() {
         ws.send("hello server");
     };
+
+    $.each( $( ".choice" ), function(_, raw_elem) {
+      var elem = $(raw_elem);
+      elem.click( function() {
+        ws.send(elem.data('item'));
+      });
+    });
 });
