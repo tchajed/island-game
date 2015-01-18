@@ -11,6 +11,10 @@ $(function() {
       $( '#won_message' ).toggleClass("hidden", !won);
       $( '#lost_message' ).toggleClass("hidden", won);
     }
+    if (msg.data.indexOf("uid:") === 0) {
+        var uid = msg.data.slice(4);
+        document.cookie = "uid=" + uid;
+    }
     console.log("client: " + msg);
   };
 
