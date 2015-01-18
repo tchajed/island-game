@@ -35,6 +35,9 @@ class WebSocketHandler(websocket.WebSocketHandler):
       print("WebSocket closed for " + uid)
       return
 
+class TurnResult(object):
+  Win, Tie, Lose = "win", "tie", "lose"
+
 class TurnHandler(tornado.web.RequestHandler):
   last_player = None
   last_move = None
@@ -42,33 +45,52 @@ class TurnHandler(tornado.web.RequestHandler):
   def get_current_uid(self):
     return self.get_cookie("uid")
 
-  def wins(self, move):
+  @classmethod
+  def result(cls, last_move, move):
+    if move == last_move:
+      return TurnResult.Tie
+
     item_beats = {
       'rock' : ['scissors'],
       'paper' : ['rock'],
       'scissors' : ['paper'],
     }
 
-    return TurnHandler.last_move in item_beats[move]
+    if last_move in item_beats[move]:
+      return TurnResult.Win
+    return TurnResult.Lose
 
   def post(self, move):
     if move not in {"rock", "paper", "scissors"}:
       raise tornado.web.HTTPError(400)
 
     me = self.get_current_uid()
-
     print("user {} made move {}".format(me, move))
+
+    if TurnHandler.last_player == me:
+      # change your move
+      TurnHandler.last_move = move
+      return
+
     if TurnHandler.last_move is None:
       TurnHandler.last_move, TurnHandler.last_player = move, me
       return
     
-    if self.wins(move):
-      winner, loser = me, TurnHandler.last_player
-    else:
-      winner, loser = TurnHandler.last_player, me
-
+    last_move = TurnHandler.last_move
+    last_player = TurnHandler.last_player
     TurnHandler.last_player = None
     TurnHandler.last_move = None
+
+    result = TurnHandler.result(last_move, move)
+    if result == TurnResult.Tie:
+      get_user(last_player).write_message("result:tie")
+      get_user(me).write_message("result:tie")
+      return
+
+    if result == TurnResult.Win:
+      winner, loser = me, last_player
+    if result == TurnResult.Lose:
+      winner, loser = last_player, me
 
     print("winner: {} loser: {}".format(winner, loser))
 
