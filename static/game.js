@@ -26,7 +26,7 @@ $(function() {
   $.each( $( ".choice" ), function(_, raw_elem) {
     var elem = $(raw_elem);
     elem.click( function() {
-      $.post('http://localhost:8888/rpc/turn/' +
+      $.post('http://' + window.location.host + '/rpc/turn/' +
               elem.data('item'));
 
       $( '#waiting_message' ).removeClass("hidden");
