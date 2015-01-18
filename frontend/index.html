@@ -7,9 +7,17 @@
       src="{{ static_url("game.js") }}" 
       type="text/javascript">
     </script>
+    <link 
+      rel="stylesheet" 
+      type="text/css" 
+      href="{{ static_url("game.css") }}"
+    />
   </head>
   <body>
-    Howdy. Click one of the following options:
+    <div id="intro">Howdy. Click one of the following options:
+    <div class="hidden" id="won_message">Congratulations, you won! Play again?</div>
+    <div class="hidden" id="lost_message">Sorry, you lost :/. Play again?</div>
+
     <div><a href="#" class="choice" data-item="rock">Rock</a></div>
     <div><a href="#" class="choice" data-item="paper">Paper</a></div>
     <div><a href="#" class="choice" data-item="scissors">Scissors</a></div>
