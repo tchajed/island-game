@@ -5,8 +5,8 @@ function log(text) {
 $(function() {
   var ws = new WebSocket("ws://localhost:8888/ws");
   ws.onmessage = function(msg) {
-    if (msg.indexOf("result") == 0) {
-      var won = msg.indexOf("won") != -1;
+    if (msg.data.indexOf("result") == 0) {
+      var won = msg.data.indexOf("won") != -1;
       $( '#intro-message' ).addClass("hidden");
       $( '#won_message' ).toggleClass("hidden", !won);
       $( '#lost_message' ).toggleClass("hidden", won);
