@@ -41,8 +41,13 @@ class TurnHandler(tornado.web.RequestHandler):
     return self.get_cookie("uid")
 
   def wins(self, move):
-    # TODO(tchajed): actually implement rock-paper-scissors rules
-    return len(move) > len(TurnHandler.last_move)
+    item_beats = {
+      'rock' : ['scissors'],
+      'paper' : ['rock'],
+      'scissors' : ['paper'],
+    }
+
+    return TurnHandler.last_move in item_beats[move]
 
   def post(self, move):
     if move not in {"rock", "paper", "scissors"}:
