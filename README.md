@@ -1,1 +1,1 @@
-# island-game
+# Rock-paper-scissors in Tornado
