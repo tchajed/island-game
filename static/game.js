@@ -17,7 +17,7 @@ $(function() {
         var uid = msg.data.slice(4);
         document.cookie = "uid=" + uid;
     }
-    console.log("client: " + msg);
+    console.log("client: " + msg.data);
   };
 
   ws.onopen = function() {
