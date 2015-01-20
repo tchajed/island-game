@@ -1,5 +1,6 @@
 $(function() {
-  var ws = new WebSocket("ws://localhost:8888/ws");
+  var host = window.location.host;
+  var ws = new WebSocket("ws://" + host + "/ws");
   var parse_msg = function(s) { return s.split(":"); }
 
   ws.onmessage = function(msg) {
@@ -26,8 +27,7 @@ $(function() {
   $.each( $( ".choice" ), function(_, raw_elem) {
     var elem = $(raw_elem);
     elem.click( function() {
-      $.post('http://' + window.location.host + '/rpc/turn/' +
-              elem.data('item'));
+      $.post('/rpc/turn/' + elem.data('item'));
 
       $( '#waiting_message' ).removeClass("hidden");
       $( '#choices ' ).addClass("hidden");
